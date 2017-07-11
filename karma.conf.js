@@ -12,7 +12,8 @@ module.exports = function(config) {
     },
     browsers: ['PhantomJS'],
     browserify: {
-      debug: true
+      debug: true,
+      bundleDelay: 2000
     }
   });
 }
