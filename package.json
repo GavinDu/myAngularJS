@@ -1,0 +1,38 @@
+{
+  "name": "my-own-angularjs",
+  "version": "1.0.0",
+  "description": "This is my exercise project for building a framework",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "karma start",
+    "lint": "jshint src test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GavinDu/myAngularJS.git"
+  },
+  "keywords": [
+    "angularjs"
+  ],
+  "author": "Gavin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GavinDu/myAngularJS/issues"
+  },
+  "homepage": "https://github.com/GavinDu/myAngularJS#readme",
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "jasmine-core": "^2.6.4",
+    "jshint": "^2.9.5",
+    "karma": "^1.7.0",
+    "karma-browserify": "^5.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-jshint-preprocessor": "0.0.6",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "phantomjs": "^2.1.7",
+    "sinon": "^2.3.7",
+    "watchify": "^3.9.0"
+  }
+}
