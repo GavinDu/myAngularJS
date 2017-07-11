@@ -1,3 +1,5 @@
+'use strict';
+
 var sayHello = require('../src/hello.js');
 
 describe("Test Hello Function", function() {

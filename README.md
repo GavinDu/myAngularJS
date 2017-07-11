@@ -19,7 +19,7 @@ Installing ***Lodash*** and ***jQuery*** libraries for two reasons:
   npm install --save lodash jquery 
   ```
   
-### Scopes
+### Scopes (Plain JavaScript Object)
 ---
 **The purposes of Scopes**
 1. Sharing data between controllers and views
@@ -32,3 +32,5 @@ Installing ***Lodash*** and ***jQuery*** libraries for two reasons:
 2. Scope inheritance, the mechanism for scope hierarchies for sharing data and events.
 3. Efficient dirty-checking for collections - `arrys` and `object`.
 4. The event system (`$on`, `$emit`, and `$broadcast`).
+
+`$watch` and `$digest` are two sides of the same coin. Together they form the core of what the digest cycle is all about: Reacting to changes in data.
