@@ -34,3 +34,20 @@ Installing ***Lodash*** and ***jQuery*** libraries for two reasons:
 4. The event system (`$on`, `$emit`, and `$broadcast`).
 
 `$watch` and `$digest` are two sides of the same coin. Together they form the core of what the digest cycle is all about: Reacting to changes in data.
+
+## Day03
+---
+
+**The performance characteristics of Scope**
+1. Attaching data to a scope does not by itself have an impact on performance.
+If no watcher is watching a property, it doesn't matter if it's on the scope or
+not. Angular does not iterate over the properties of a scope. It iterates over
+the watches.
+2. Every watch function is called during every $digest. For this reason, it's a
+good idea to pay attention to the number of watches you have, as well as the 
+performance of each individual watch function or expression.
+
+**To only call watch function with listener function**
+In the watcher object, `lisenterFn: lisenterFn || function() {}` define a empty
+function for without defining listener function. Also, Angular use the return 
+value of `watchFn`, even when there is no `listenFun`.
