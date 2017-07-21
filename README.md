@@ -2,6 +2,7 @@
 This is an exercise for building an angularjs framework according the book "Build Your Own AngularJS"
 
 ## Day01
+
 Setting up the basic configurations, add ***karma***, ***jasmine***, ***phantomjs***, ***sinon***, ***jshint***, ***browserify***
   
   ```javascript
@@ -9,7 +10,6 @@ Setting up the basic configurations, add ***karma***, ***jasmine***, ***phantomj
   ``` 
 
 ## Day02
----
 
 Installing ***Lodash*** and ***jQuery*** libraries for two reasons:
   > 1. Array and object manipulation, such as equality checking and cloning, will be delegated to the ***Lodash***.
@@ -36,7 +36,6 @@ Installing ***Lodash*** and ***jQuery*** libraries for two reasons:
 `$watch` and `$digest` are two sides of the same coin. Together they form the core of what the digest cycle is all about: Reacting to changes in data.
 
 ## Day03
----
 
 **The performance characteristics of Scope**
 1. Attaching data to a scope does not by itself have an impact on performance.
@@ -48,6 +47,28 @@ good idea to pay attention to the number of watches you have, as well as the
 performance of each individual watch function or expression.
 
 **To only call watch function with listener function**
+
 In the watcher object, `lisenterFn: lisenterFn || function() {}` define a empty
 function for without defining listener function. Also, Angular use the return 
 value of `watchFn`, even when there is no `listenFun`.
+
+## Day04
+
+**Idempotent function**
+A function should have no side effects, or only side effects that can happen any
+number of times. For example, if a watch fires an AJAX request, there are no
+guarantees about how many requests your app is making.
+
+## Day05
+
+**Value-Based Dirty Checking**
+Using `_.isEqual()` deeply compare two values, and 
+
+```js
+  typeof newValue == 'number' && 
+  typeof oldValue == 'number' &&
+  isNaN(newValue) && isNaN(oldValue)
+```
+
+**Evaluing Code In The Context of A Scope**
+$eval is the Angular method to run the code in the context of A scope.

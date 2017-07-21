@@ -20,6 +20,7 @@ function Scope() {
    * framework, and should not be called from application code.
    */
   this.$$watchers = [];
+  this.$$lastDirtyWatch = null;
 }
 
 /** 
@@ -27,7 +28,7 @@ function Scope() {
 */
 function initWatchVal() {}
 
-Scope.prototype.$watch = function(watchFn, lisenterFn) {
+Scope.prototype.$watch = function(watchFn, lisenterFn, valueEq) {
   /**
    * watchFn: monitor the data you're interested in.
    * lisenterFn: called when data changes.
@@ -41,31 +42,71 @@ Scope.prototype.$watch = function(watchFn, lisenterFn) {
   var watcher = {
     watchFn: watchFn,
     lisenterFn: lisenterFn || function() {},
-    last: initWatchVal
+    last: initWatchVal,
+    valueEq: !!valueEq
   };
   this.$$watchers.push(watcher);
+  this.$$lastDirtyWatch = null;
 };
 
+
 /**
- * The $digest function:
+ * The $$digestOnce function:
  * The job of it is to call the watch function and compare its return value to
  * whatever the same function returned last time. If the value differ, the 
  * watcher is dirty and its listner function should be called.
  */
-Scope.prototype.$digest = function() {
+Scope.prototype.$$digestOnce = function() {
   var self = this;
   var newValue;
   var oldValue;
+  var dirty;
   _.forEach(this.$$watchers, function(watcher) {
     newValue = watcher.watchFn(self);
     oldValue = watcher.last;
-    if (newValue !== oldValue) {
-      watcher.last = newValue;
-      watcher.lisenterFn(newValue, (oldValue === initWatchVal ?
-        newValue : oldValue), 
-        self);  
+    if (!self.$$areEqual(newValue, oldValue, watcher.valueEq)) {
+      self.$$lastDirtyWatch = watcher;
+      watcher.last = (watcher.valueEq ? _.cloneDeep(newValue) : newValue);
+      watcher.lisenterFn(newValue, 
+        (oldValue === initWatchVal ? newValue : oldValue), 
+        self);
+      dirty = true;  
+    } else if (self.$$lastDirtyWatch === watcher) {
+      return false;
     }
   });
+  return dirty;
+};
+
+/**
+ * Using dirty variable to verify whether having variables is still changing.
+ * 
+ * In the Angular implementaion, using an async
+ */
+Scope.prototype.$digest = function() {
+  var dirty;
+  var ttl = 10;
+  this.$$lastDirtyWatch = null;
+  do {
+    dirty = this.$$digestOnce();
+    if (dirty && !(ttl--)) {
+      throw "10 digest iterations reached.";
+    }
+  } while(dirty);
+};
+
+Scope.prototype.$$areEqual = function(newValue, oldValue, valueEq) {
+  if (!!valueEq) {
+    return _.isEqual(newValue, oldValue);
+  } else {
+    return newValue === oldValue ||
+      (typeof newValue == 'number' && typeof oldValue == 'number' &&
+       isNaN(newValue) && isNaN(oldValue));
+  }
+};
+
+Scope.prototype.$eval = function(expr, locals) {
+  return expr(this, locals);
 };
 
 module.exports = Scope;
